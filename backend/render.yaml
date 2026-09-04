@@ -24,6 +24,6 @@ services:
 
 databases:
   - name: meal-planner-db
-    databaseName: meal_planner
+    databaseName: meal_planner_iifv
     user: meal_planner_user
     plan: free
