@@ -13,10 +13,10 @@ import shoppingListRoutes from './routes/shoppingList';
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Build allowed origins list from env — supports comma-separated values
+// Build allowed origins list — supports comma-separated values, strips trailing slashes
 const allowedOrigins = (process.env['FRONTEND_URL'] || 'http://localhost:3000')
   .split(',')
-  .map((o) => o.trim())
+  .map((o) => o.trim().replace(/\/$/, ''))
   .filter(Boolean);
 
 // Always allow localhost in dev
