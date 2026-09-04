@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+import { prisma } from './lib/prisma';
 
 import authRoutes from './routes/auth';
 import recipeRoutes from './routes/recipes';
@@ -22,7 +23,27 @@ app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
 // Health check
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    env: {
+      nodeEnv: process.env['NODE_ENV'],
+      hasDbUrl: !!process.env['DATABASE_URL'],
+      hasFrontendUrl: !!process.env['FRONTEND_URL'],
+    },
+  });
+});
+
+// Deep health check — tests actual DB connectivity
+app.get('/health/db', async (_req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({ status: 'ok', database: 'connected' });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error('DB health check failed:', message);
+    res.status(503).json({ status: 'error', database: 'disconnected', detail: message });
+  }
 });
 
 // Routes

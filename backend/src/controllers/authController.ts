@@ -28,7 +28,7 @@ export async function register(req: Request, res: Response): Promise<void> {
     const token = generateToken(user.id, user.email);
     res.status(201).json({ user, token });
   } catch (err) {
-    console.error('Register error:', err);
+    console.error('Register error:', err instanceof Error ? err.message : err);
     res.status(500).json({ error: 'Registration failed' });
   }
 }
