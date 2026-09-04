@@ -13,9 +13,28 @@ import shoppingListRoutes from './routes/shoppingList';
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// Build allowed origins list from env — supports comma-separated values
+const allowedOrigins = (process.env['FRONTEND_URL'] || 'http://localhost:3000')
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+// Always allow localhost in dev
+if (process.env['NODE_ENV'] !== 'production') {
+  allowedOrigins.push('http://localhost:3000');
+}
+
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    // Allow server-to-server requests (no Origin header) and allowed origins
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn(`CORS blocked: ${origin} not in [${allowedOrigins.join(', ')}]`);
+      callback(new Error(`CORS: origin ${origin} not allowed`));
+    }
+  },
   credentials: true,
 }));
 app.use(express.json());
@@ -29,7 +48,7 @@ app.get('/health', (_req, res) => {
     env: {
       nodeEnv: process.env['NODE_ENV'],
       hasDbUrl: !!process.env['DATABASE_URL'],
-      hasFrontendUrl: !!process.env['FRONTEND_URL'],
+      allowedOrigins,
     },
   });
 });
