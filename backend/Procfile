@@ -1,0 +1,2 @@
+web: npm run prisma:migrate && node dist/index.js
+release: npx prisma migrate deploy

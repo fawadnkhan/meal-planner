@@ -1,0 +1,93 @@
+// Prisma schema for Meal Planner application
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String       @id @default(cuid())
+  email        String       @unique
+  name         String
+  passwordHash String       @map("password_hash")
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+  recipes      Recipe[]
+  mealPlans    MealPlan[]
+
+  @@map("users")
+}
+
+model Recipe {
+  id           String            @id @default(cuid())
+  title        String
+  description  String?
+  instructions String?
+  servings     Int               @default(1)
+  prepTime     Int?              @map("prep_time")   // minutes
+  cookTime     Int?              @map("cook_time")   // minutes
+  imageUrl     String?           @map("image_url")
+  userId       String            @map("user_id")
+  createdAt    DateTime          @default(now()) @map("created_at")
+  updatedAt    DateTime          @updatedAt @map("updated_at")
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ingredients  RecipeIngredient[]
+  mealPlanItems MealPlanItem[]
+
+  @@map("recipes")
+}
+
+model Ingredient {
+  id          String            @id @default(cuid())
+  name        String            @unique
+  unit        String?
+  createdAt   DateTime          @default(now()) @map("created_at")
+  recipes     RecipeIngredient[]
+
+  @@map("ingredients")
+}
+
+model RecipeIngredient {
+  id           String     @id @default(cuid())
+  recipeId     String     @map("recipe_id")
+  ingredientId String     @map("ingredient_id")
+  quantity     Float
+  unit         String?
+  notes        String?
+  recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+
+  @@unique([recipeId, ingredientId])
+  @@map("recipe_ingredients")
+}
+
+model MealPlan {
+  id        String         @id @default(cuid())
+  name      String
+  weekStart DateTime       @map("week_start")  // Monday of the week
+  userId    String         @map("user_id")
+  createdAt DateTime       @default(now()) @map("created_at")
+  updatedAt DateTime       @updatedAt @map("updated_at")
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     MealPlanItem[]
+
+  @@map("meal_plans")
+}
+
+model MealPlanItem {
+  id         String   @id @default(cuid())
+  mealPlanId String   @map("meal_plan_id")
+  recipeId   String   @map("recipe_id")
+  dayOfWeek  Int      @map("day_of_week")  // 0=Monday ... 6=Sunday
+  mealType   String   @map("meal_type")    // breakfast, lunch, dinner, snack
+  servings   Int      @default(1)
+  createdAt  DateTime @default(now()) @map("created_at")
+  mealPlan   MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+  recipe     Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@map("meal_plan_items")
+}
