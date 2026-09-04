@@ -2,8 +2,8 @@
 
 A full-stack web app for planning weekly meals, managing recipes, and generating shopping lists.
 
-**Live app:** `https://YOUR_APP.vercel.app` *(replace after deployment)*
-**API:** `https://YOUR_API.render.com` *(replace after deployment)*
+**Live app:** `https://meal-planner-nu-five.vercel.app/` *(replace after deployment)*
+**API:** `https://meal-planner-api-82e5.onrender.com` *(replace after deployment)*
 
 ---
 
