@@ -3,7 +3,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
   "env": {
-    "NEXT_PUBLIC_API_URL": "https://YOUR_BACKEND_URL/api"
+    "NEXT_PUBLIC_API_URL": "https://meal-planner-api-82e5.onrender.com/api"
   },
   "headers": [
     {
