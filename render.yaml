@@ -20,7 +20,7 @@ services:
       - key: JWT_EXPIRES_IN
         value: 7d
       - key: FRONTEND_URL
-        value: https://YOUR_FRONTEND_URL.vercel.app
+        value: https://meal-planner-nu-five.vercel.app/
 
 databases:
   - name: meal-planner-db
