@@ -1,6 +1,13 @@
 import axios, { AxiosError } from 'axios';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+const configuredBaseUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
+const defaultBaseUrl =
+  process.env.NODE_ENV === 'production'
+    ? 'https://meal-planner-api-82e5.onrender.com/api'
+    : 'http://localhost:4000/api';
+const BASE_URL = (configuredBaseUrl || defaultBaseUrl).replace(/\/$/, '').endsWith('/api')
+  ? (configuredBaseUrl || defaultBaseUrl).replace(/\/$/, '')
+  : `${(configuredBaseUrl || defaultBaseUrl).replace(/\/$/, '')}/api`;
 
 export const api = axios.create({
   baseURL: BASE_URL,
