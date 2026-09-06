@@ -41,6 +41,14 @@ app.use(express.json());
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
 // Health check
+app.get('/', (_req, res) => {
+  res.json({
+    name: 'meal-planner-api',
+    status: 'ok',
+    health: '/health',
+  });
+});
+
 app.get('/health', (_req, res) => {
   res.json({
     status: 'ok',
