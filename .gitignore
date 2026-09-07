@@ -32,8 +32,12 @@ Thumbs.db
 *.swp
 *.swo
 
-# Prisma
-backend/prisma/migrations/
+# Prisma migrations are required for production deploys
+backend/prisma/migrations/*
+!backend/prisma/migrations/
+!backend/prisma/migrations/**/
+!backend/prisma/migrations/**/*.sql
+!backend/prisma/migrations/**/*.toml
 
 # Testing
 coverage/
