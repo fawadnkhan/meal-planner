@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "Meal Planner",
+    "slug": "meal-planner",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "splash": { "resizeMode": "contain", "backgroundColor": "#f6f7f2" },
+    "ios": { "supportsTablet": true, "bundleIdentifier": "com.mealplanner.app", "infoPlist": { "NSCameraUsageDescription": "Add a photo to your recipes." } },
+    "android": { "adaptiveIcon": { "backgroundColor": "#f6f7f2" }, "package": "com.mealplanner.app" },
+    "plugins": ["expo-secure-store", "expo-notifications"],
+    "extra": { "apiUrl": "https://meal-planner-api-82e5.onrender.com/api" }
+  }
+}

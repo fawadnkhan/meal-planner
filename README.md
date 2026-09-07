@@ -239,6 +239,18 @@ The test suite covers:
 
 ## Deployment
 
+## Mobile client
+
+The Expo React Native client is in `mobile/`. It uses the existing REST API, SecureStore for JWTs, AsyncStorage for cached reads, and includes an offline write-queue helper for plan mutations.
+
+```bash
+cd mobile
+npm install
+npx expo start
+```
+
+Set `EXPO_PUBLIC_API_URL` to override the production API. Before store builds, add branded `icon.png` and `splash.png` assets, configure EAS credentials, and complete native notification, privacy, terms, screenshot, and store metadata work. The current backend does not yet expose profile-preference or push-notification endpoints.
+
 ### Backend → Render (recommended free tier)
 
 1. Push to GitHub.
