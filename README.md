@@ -93,6 +93,8 @@ meal_plan_items     – id, meal_plan_id, recipe_id, day_of_week (0=Mon…6=Sun)
 |---|---|---|
 | POST | `/api/auth/register` | Register new user |
 | POST | `/api/auth/login` | Login, get JWT |
+| POST | `/api/auth/social` | Verify Google/Apple ID token and get JWT |
+| POST | `/api/auth/social/link` | Link a verified social identity to the current account 🔒 |
 | GET | `/api/auth/me` | Get current user 🔒 |
 
 ### Recipes
@@ -250,6 +252,10 @@ npx expo start
 ```
 
 Set `EXPO_PUBLIC_API_URL` to override the production API. Before store builds, add branded `icon.png` and `splash.png` assets, configure EAS credentials, and complete native notification, privacy, terms, screenshot, and store metadata work. The current backend does not yet expose profile-preference or push-notification endpoints.
+
+### Mobile localization and social auth
+
+Translations live in `mobile/src/i18n/translations.ts`. Add a locale object, include its code in `supported`, and add RTL handling to `rtlLanguages` when needed. Language selection is persisted locally and device locale is used on first launch. Set `EXPO_PUBLIC_GOOGLE_CLIENT_ID`, `APPLE_CLIENT_ID`, and the matching Apple service configuration in the deployment environment. Run `npx prisma migrate deploy` in the backend before enabling social sign-in.
 
 ### Backend → Render (recommended free tier)
 

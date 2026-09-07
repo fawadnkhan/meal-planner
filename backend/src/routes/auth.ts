@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import { register, login, getMe } from '../controllers/authController';
+import { register, login, socialLogin, linkSocial, getMe } from '../controllers/authController';
 import { authenticate } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 
@@ -17,6 +17,9 @@ router.post(
   validate,
   register
 );
+
+router.post('/social', socialLogin);
+router.post('/social/link', authenticate, linkSocial);
 
 // POST /api/auth/login
 router.post(
